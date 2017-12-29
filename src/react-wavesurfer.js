@@ -176,8 +176,14 @@ class Wavesurfer extends Component {
       }
     });
 
+    // update peaks
+    if (this.props.prerender) {
+      this._wavesurfer.backend.peaks = this.props.audioPeaks;
+      this._wavesurfer.drawBuffer();
+    }
+
     // if audioFile prop, load file
-    if (this.props.audioFile) {
+    if (this.props.audioFile && !this.props.prerender) {
       this._loadAudio(this.props.audioFile, this.props.audioPeaks);
     }
 
@@ -404,6 +410,7 @@ Wavesurfer.propTypes = {
   responsive: PropTypes.bool,
   onPosChange: PropTypes.func,
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
+  prerender: PropTypes.bool,
   options: PropTypes.shape({
     audioRate: PropTypes.number,
     backend: PropTypes.oneOf(['WebAudio', 'MediaElement']),
